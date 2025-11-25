@@ -1,11 +1,17 @@
 import com.ecommerce.*;
 import java.util.List;
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
         //Test Customer (constructor overloading)
         Customer c1 = new Customer("JohnDoe","john@example.com");
         Customer c2 = new Customer("JaneSmith");
+        Order o1;
 
         //Test Administrator (final class)
         Administrator a1 = new Administrator("AdminUser","admin@ecom.com");
@@ -25,7 +31,26 @@ public class Main {
 
         System.out.println("Total products cataloged: " + Product.getTotalProducts());
 
+        //USER SELECTION LOGIC
+        System.out.println("\n--- Starting New Order ---");
         Product.displayCatalog();
+
+        List<Product> selectedProducts = new ArrayList<>();
+        String productSelection;
+        boolean orderProcess = true;
+
+        while(orderProcess) {
+            System.out.println("Enter product name to add (or type 'done'");
+            productSelection = scanner.nextLine().trim();
+
+            if (productSelection.equalsIgnoreCase("done")) {
+                orderProcess = false; //exit loop, end program
+            }
+            else if (Product.isProductAvailable(productSelection)) {
+                
+            }
+        }
+
 
         //Test Order(initializer blocks, interface)
         Order o1 = new Order(c1, List.of(p1,p2), "2025-10-25");
