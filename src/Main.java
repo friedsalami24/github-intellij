@@ -16,7 +16,16 @@ public class Main {
         Product p2 = new Product("Mouse", 24.50, "SKU1002");
         Product p3 = new Product("Keyboard", 100.00, "SKU1003");
         Product p4 = new Product("Headset", 150.00, "SKU1004");
+        //System.out.println("Total products cataloged: " + Product.getTotalProducts());
+
+        Product.addToCatalog(p1);
+        Product.addToCatalog(p2);
+        Product.addToCatalog(p3);
+        Product.addToCatalog(p4);
+
         System.out.println("Total products cataloged: " + Product.getTotalProducts());
+
+        Product.displayCatalog();
 
         //Test Order(initializer blocks, interface)
         Order o1 = new Order(c1, List.of(p1,p2), "2025-10-25");
