@@ -5,17 +5,88 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Main {
+    //TO SHOWCASE EVERY FUNCTION AND DATA FLOW COMPLETELY, ADMINFLOW AND CUSTOMERFLOW CLASS WILL BE CREATED AS A CONDITIONAL
+    //CHOICE BASED ON WHAT USER WILL CHOOSE
+
+    //CREATING CONDITIONAL CHOICE FOR USER TO SELECT (CUSTOMER OR ADMIN)
+    private static void appFlow (Scanner scanner) {
+        System.out.println("\n=== OOP PROJECT ECOMMERCE SYSTEM ===");
+        System.out.println("Please choose : (1) Customer      (2) Administrator");
+        System.out.println("Enter your choice (eg; 1 or 2) : ");
+
+        String choice = scanner.nextLine().trim();
+
+        if(choice.equals(1)) {
+            //CALLING CUSTOMER FLOW
+            //Customer customer = customerFlow(scanner);
+
+            System.out.println("\n=== CUSTOMER FLOW STARTING ===");
+        } else if (choice.equals(2)) {
+            //CALLING ADMIN FLOW
+            Administrator admin = adminFlow(scanner);
+
+            System.out.println("\n=== ADMINISTRATOR FLOW STARTING ===");
+        }
+
+    }
+
+
+
+    //CREATING ADMIN FLOW CLASS
+    private static Administrator adminFlow(Scanner scanner) {
+        System.out.println("\n=== Admin Login ===");
+
+        System.out.println("Enter Admin Username : ");
+        String adminUsername = scanner.nextLine();
+
+        System.out.println("Enter Email :  ");
+        String adminEmail = scanner.nextLine();
+
+        //INITIALIZING ADMIN OBJECT OF CLASS ADMINISTRATOR TO PASS USERNAME AND EMAIL
+        Administrator admin1 = new Administrator(adminUsername, adminEmail);
+
+        //UTILIZING SETTER IN ADMINISTRATOR CLASS BY ASKING ADMIN WHAT DEPARTMENT THEY BELONG TO
+        System.out.println("Enter Department (eg; Logistic, IT, Sales): ");
+        String adminDepartment = scanner.nextLine().trim(); //using trim to cutout any spacebar entered after department
+        admin1.setDepartment(adminDepartment); //adding department to existing admin object
+
+        admin1.displayProfile();
+    }
+
+    private static Customer custFlow(Scanner scanner) {
+        System.out.println("\n=== CUSTOMER LOGIN ===");
+
+        System.out.println("Enter Username : ");
+        String custName = scanner.nextLine().trim();
+
+        System.out.println("Enter email : ");
+        String custEmail = scanner.nextLine().trim();
+
+        Customer c1 = new Customer(custName, custEmail);
+    }
+
+    private static void productInitialization(Scanner scanner) {
+        //Test Product (Static counter)
+        Product p1 = new Product("Laptop", 1200.00, "SKU1001");
+        Product p2 = new Product("Mouse", 24.50, "SKU1002");
+        Product p3 = new Product("Keyboard", 100.00, "SKU1003");
+        Product p4 = new Product("Headset", 150.00, "SKU1004");
+        //System.out.println("Total products cataloged: " + Product.getTotalProducts());
+
+
+        //THIS BLOCK IS TO ADD CREATED PRODUCTS OBJECT TO DISPLAYMAP FOR CATALOG DISPLAY
+        Product.addToCatalog(p1);
+        Product.addToCatalog(p2);
+        Product.addToCatalog(p3);
+        Product.addToCatalog(p4);
+
+        System.out.println("Total products in catalog: " + Product.getTotalProducts());
+    }
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        //Test Customer (constructor overloading)
-        Customer c1 = new Customer("JohnDoe","john@example.com");
-        Customer c2 = new Customer("JaneSmith");
-        //Order o1;
 
-        //Test Administrator (final class)
-        Administrator a1 = new Administrator("AdminUser","admin@ecom.com");
-        a1.setDepartment("Logistics");
 
         //Test Product (Static counter)
         Product p1 = new Product("Laptop", 1200.00, "SKU1001");
