@@ -26,10 +26,12 @@ public class Product {
     //RECEIVE DATA(OBJECTS) FROM MAIN AND STORE INSIDE HASHMAP PARAMETER (NAME(KEY), PRICE(VALUE))
     public static void addToCatalog(Product product) {
         DISPLAY_MAP.put(product.getName(), product.getPrice());
+
+        OBJECT_MAP.put(product.getName(), product);
     }
 
     //METHOD TO DISPLAY PRODUCTS CATALOG USING FOR EACH LOOP LAMBDA EXPRESSION
-    public static void displayCatalog() {
+    public static void displayProductCatalog() {
         System.out.println("\n--- Available Products (Select by Name) ---");
         DISPLAY_MAP.forEach((name, price) ->
                 System.out.printf("  > %-10s : $%.2f\n", name, price)

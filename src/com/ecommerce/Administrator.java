@@ -15,7 +15,9 @@ public final class Administrator extends User {
 
     @Override
     public void displayProfile() {
-        System.out.println("Administrator: " + getUsername() + " | Dept: " + department);
+        System.out.println("Admin Username : " + getUsername());
+        System.out.println("Admin Email : " + getEmail());
+        System.out.println("Department : " + department);
     }
 
 

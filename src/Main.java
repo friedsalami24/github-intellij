@@ -9,29 +9,39 @@ public class Main {
     //CHOICE BASED ON WHAT USER WILL CHOOSE
 
     //CREATING CONDITIONAL CHOICE FOR USER TO SELECT (CUSTOMER OR ADMIN)
-    private static void appFlow (Scanner scanner) {
+    private static void userFlowProcess(Scanner scanner) {
         System.out.println("\n=== OOP PROJECT ECOMMERCE SYSTEM ===");
         System.out.println("Please choose : (1) Customer      (2) Administrator");
         System.out.println("Enter your choice (eg; 1 or 2) : ");
 
-        String choice = scanner.nextLine().trim();
+        //using string as a data type for choice input
+        String choice = scanner.nextLine();
 
-        if(choice.equals("1")) {
+        //adding conditional statement for user choice
+        //1 = is for customer flow process
+        //main will call customerFlowProcess if choice is 1
+        if (choice.equals("1")) {
             //CALLING CUSTOMER FLOW
-            Customer customer = custFlow(scanner);
-
             System.out.println("\n=== CUSTOMER FLOW STARTING ===");
+
+
+            Customer customer = customerFlowProcess(scanner);
+
+            //adding a simple indicator to indicate the flow process is finished
+            System.out.println("\n=== CUSTOMER FLOW FINISHED ===");
+
         } else if (choice.equals("2")) {
             //CALLING ADMIN FLOW
-            Administrator admin = adminFlow(scanner);
+            System.out.println("\n=== CUSTOMER FLOW STARTING ===");
+            Administrator admin = administratorFlowProcess(scanner);
 
-            System.out.println("\n=== ADMINISTRATOR FLOW STARTING ===");
+            System.out.println("\n=== ADMINISTRATOR FLOW ADMIN FLOW FINISHED ===");
         }
 
     }
 
     //CREATING ADMIN FLOW CLASS
-    private static Administrator adminFlow(Scanner scanner) {
+    private static Administrator administratorFlowProcess(Scanner scanner) {
         System.out.println("\n=== Admin Login ===");
 
         System.out.println("Enter Admin Username : ");
@@ -56,31 +66,31 @@ public class Main {
     }
 
     //CREATING CUSTOMER FLOW CLASS
-    private static Customer custFlow(Scanner scanner) {
+    private static Customer customerFlowProcess(Scanner scanner) {
         System.out.println("\n=== CUSTOMER LOGIN ===");
 
         //PHASE 1 (CUSTOMER USERNAME AND EMAIL PROMPT)
         System.out.println("Enter Username : ");
-        String custName = scanner.nextLine().trim();
+        String customerUserName = scanner.nextLine().trim();
 
         System.out.println("Enter email : ");
-        String custEmail = scanner.nextLine().trim();
+        String customerEmail = scanner.nextLine().trim();
 
-        Customer c1 = new Customer(custName, custEmail);
+        Customer customerObject = new Customer(customerUserName, customerEmail);
 
-        System.out.println("\n=== CUSTOMER LOG IN SUCCESSFUL");
+        System.out.println("\n=== CUSTOMER LOG IN SUCCESSFUL ===");
 
         //PHASE 2 (TAKING CUSTOMERS ORDER)
         System.out.println("\n=== STARTING ORDER ===");
 
-        Product.displayCatalog();
+        Product.displayProductCatalog();
 
         List<Product> selectedProducts = new ArrayList<>();
         String productSelection;
         boolean orderProcess = true;
         String purchaseDate = "";
 
-        while(orderProcess) {
+        while (orderProcess) {
             System.out.println("Enter product name to add (or type 'done'");
             productSelection = scanner.nextLine().trim();
 
@@ -88,65 +98,68 @@ public class Main {
                 System.out.println("Enter date (eg; 2025-10-29) : ");
                 purchaseDate = scanner.nextLine().trim();
                 orderProcess = false; //exit loop, end program
-            }
-            else if (Product.isProductAvailable(productSelection)) {
+            } else if (Product.isProductAvailable(productSelection)) {
+                //retrieve the product object
                 Product chosenProduct = Product.getProductByName(productSelection);
-                //adding products to array list
-                selectedProducts.add(chosenProduct);
-                System.out.println(productSelection + " has been added to cart.");
+
+                if (chosenProduct != null) {
+                    //adding products to array list
+                    selectedProducts.add(chosenProduct);
+                    System.out.println(productSelection + " has been added to cart.");
+                } else {
+                    System.out.println("Internal error retrieving product data. Please try again.");
+                }
             }
-            else {
-                System.out.println("Product typed not found, please try again.");
+        }
+            //PHASE 3
+            if (!selectedProducts.isEmpty()) {
+                Order orderObject = new Order(customerObject, selectedProducts, purchaseDate);
+                orderObject.displayOrder();
+                System.out.println("Order total with 5% tax: $" + orderObject.calculateTotal(0.05));
+                System.out.println();
+                ECommerce.Inventory mainWarehouse = new ECommerce.Inventory("Main Warehouse");
+                mainWarehouse.checkStock(p1);
+
+                System.out.println("\nThank you for your order! Session complete.");
+            } else {
+                System.out.println("No order selected, order cancelled. Bye");
             }
+
+            return customerObject;
         }
 
-        //PHASE 3
-        if (!selectedProducts.isEmpty()) {
-            Order o1 = new Order(c1, selectedProducts, purchaseDate);
-            o1.displayOrder();
-            System.out.println("Order total with 5% tax: $" + o1.calculateTotal(0.05));
+        //CREATING PRODUCT INITIALIZATION TO CREATE AND STORE PRODUCTS IN MAP FOR DISPLAY
+        private static void productInitialization () {
+            //Test Product (Static counter)
+            Product p1 = new Product("Laptop", 1200.00, "SKU1001");
+            Product p2 = new Product("Mouse", 24.50, "SKU1002");
+            Product p3 = new Product("Keyboard", 100.00, "SKU1003");
+            Product p4 = new Product("Headset", 150.00, "SKU1004");
+            //System.out.println("Total products cataloged: " + Product.getTotalProducts());
 
-            System.out.println("\nThank you for your order! Session complete.");
+
+            //THIS BLOCK IS TO ADD CREATED PRODUCTS OBJECT TO DISPLAYMAP FOR CATALOG DISPLAY
+            Product.addToCatalog(p1);
+            Product.addToCatalog(p2);
+            Product.addToCatalog(p3);
+            Product.addToCatalog(p4);
+
+            System.out.println("Total products in catalog: " + Product.getTotalProducts());
         }
-        else {
-            System.out.println("No order selected, order cancelled. Bye");
-        }
 
-        return c1;
-    }
+        public static void main (String[]args){
+            Scanner scanner = new Scanner(System.in);
 
-    //CREATING PRODUCT INITIALIZATION TO CREATE AND STORE PRODUCTS IN MAP FOR DISPLAY
-    private static void productInitialization() {
-        //Test Product (Static counter)
-        Product p1 = new Product("Laptop", 1200.00, "SKU1001");
-        Product p2 = new Product("Mouse", 24.50, "SKU1002");
-        Product p3 = new Product("Keyboard", 100.00, "SKU1003");
-        Product p4 = new Product("Headset", 150.00, "SKU1004");
-        //System.out.println("Total products cataloged: " + Product.getTotalProducts());
+            //ADDING PRODUCTS TO CATALOG
+            productInitialization();
 
+            //STARTING PROCESS
+            userFlowProcess(scanner);
 
-        //THIS BLOCK IS TO ADD CREATED PRODUCTS OBJECT TO DISPLAYMAP FOR CATALOG DISPLAY
-        Product.addToCatalog(p1);
-        Product.addToCatalog(p2);
-        Product.addToCatalog(p3);
-        Product.addToCatalog(p4);
+            //CLOSING SCANNER
+            scanner.close();
 
-        System.out.println("Total products in catalog: " + Product.getTotalProducts());
-    }
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        //ADDING PRODUCTS TO CATALOG
-        productInitialization();
-
-        //STARTING PROCESS
-        appFlow(scanner);
-
-        //CLOSING SCANNER
-        scanner.close();
-
-        //Test Order(initializer blocks, interface)
+            //Test Order(initializer blocks, interface)
         /*Order o1 = new Order(c1, List.of(p1,p2), "2025-10-25");
         o1.displayOrder();
         System.out.println("Order total with 5% tax: $" + o1.calculateTotal(0.05));
@@ -154,8 +167,9 @@ public class Main {
         o2.displayOrder();
         System.out.println("Order total with 5% tax: $" + o2.calculateTotal(0.05));*/
 
-        //Test Nested Class
+            //Test Nested Class
         /*ECommerce.Inventory mainWarehouse = new ECommerce.Inventory("Main Warehouse");
         mainWarehouse.checkStock(p1);*/
+        }
     }
-}
+
