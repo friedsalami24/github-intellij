@@ -11,7 +11,7 @@ public class Main {
         //Test Customer (constructor overloading)
         Customer c1 = new Customer("JohnDoe","john@example.com");
         Customer c2 = new Customer("JaneSmith");
-        Order o1;
+        //Order o1;
 
         //Test Administrator (final class)
         Administrator a1 = new Administrator("AdminUser","admin@ecom.com");
@@ -24,6 +24,8 @@ public class Main {
         Product p4 = new Product("Headset", 150.00, "SKU1004");
         //System.out.println("Total products cataloged: " + Product.getTotalProducts());
 
+
+        //THIS BLOCK IS TO ADD CREATED PRODUCTS OBJECT TO DISPLAYMAP FOR CATALOG DISPLAY
         Product.addToCatalog(p1);
         Product.addToCatalog(p2);
         Product.addToCatalog(p3);
@@ -47,15 +49,30 @@ public class Main {
                 orderProcess = false; //exit loop, end program
             }
             else if (Product.isProductAvailable(productSelection)) {
-                
+                Product chosenProduct = Product.getProductByName(productSelection);
+                selectedProducts.add(chosenProduct);
+                System.out.println(productSelection + " has been added to cart.");
+            }
+            else {
+                System.out.println("Product typed not found, please try again.");
             }
         }
 
+        /*if (!selectedProducts.isEmpty()) {
+            // Replace the hardcoded list with the dynamic list:
+            Order o1 = new Order(c1, selectedProducts, "2025-10-25");
+
+            o1.displayOrder();
+            System.out.println("Order total with 5% tax: $" + o1.calculateTotal(0.05));
+        } else {
+            System.out.println("Order cancelled. No items selected.");
+        }*/
+
 
         //Test Order(initializer blocks, interface)
-        Order o1 = new Order(c1, List.of(p1,p2), "2025-10-25");
+        /*Order o1 = new Order(c1, List.of(p1,p2), "2025-10-25");
         o1.displayOrder();
-        System.out.println("Order total with 5% tax: $" + o1.calculateTotal(0.05));
+        System.out.println("Order total with 5% tax: $" + o1.calculateTotal(0.05));*/
         Order o2 = new Order(c2, List.of(p3,p4), "2027-10-09");
         o2.displayOrder();
         System.out.println("Order total with 5% tax: $" + o2.calculateTotal(0.05));

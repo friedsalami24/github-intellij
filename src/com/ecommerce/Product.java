@@ -13,7 +13,7 @@ public class Product {
     public static final Map<String, Double> DISPLAY_MAP = new LinkedHashMap<>();
 
     //HASHMAP TO LOOK UP FOR SELECTED PRODUCTS
-    public static final Map<String, Double> OBJECT_MAP = new LinkedHashMap<>();
+    public static final Map<String, Product> OBJECT_MAP = new LinkedHashMap<>();
 
     //3 ARGUMENT CONSTRUCTOR (INCREMENT TOTAL PRODUCTS FOR EVERY OBJECT OF PRODUCT CLASS INITIALIZATION
     public Product(String name, double price, String sku) {
