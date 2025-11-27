@@ -90,15 +90,24 @@ public class Main {
         boolean orderProcess = true;
         String purchaseDate = "";
 
+        //while order process is true = enter loop
         while (orderProcess) {
             System.out.println("Enter product name to add (or type 'done'");
             productSelection = scanner.nextLine().trim();
 
+            //if productSelection = 'done' = exit loop
             if (productSelection.equalsIgnoreCase("done")) {
+
+                //prompting customer for date of purchase before finalizing order
                 System.out.println("Enter date (eg; 2025-10-29) : ");
                 purchaseDate = scanner.nextLine().trim();
-                orderProcess = false; //exit loop, end program
+
+                //changing orderProcess value to false to exit loop
+                orderProcess = false;
+
+            //else if productSelection = any available products in the catalog = enter loop (using isProductAvailable)
             } else if (Product.isProductAvailable(productSelection)) {
+
                 //retrieve the product object
                 Product chosenProduct = Product.getProductByName(productSelection);
 
@@ -115,10 +124,10 @@ public class Main {
             if (!selectedProducts.isEmpty()) {
                 Order orderObject = new Order(customerObject, selectedProducts, purchaseDate);
                 orderObject.displayOrder();
-                System.out.println("Order total with 5% tax: $" + orderObject.calculateTotal(0.05));
+                System.out.println("Order total with 5% tax   : $" + orderObject.calculateTotal(0.05));
                 System.out.println();
                 ECommerce.Inventory mainWarehouse = new ECommerce.Inventory("Main Warehouse");
-                mainWarehouse.checkStock(p1);
+                mainWarehouse.checkStockLoop(selectedProducts);
 
                 System.out.println("\nThank you for your order! Session complete.");
             } else {

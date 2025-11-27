@@ -8,6 +8,7 @@ public class Product {
     private double price;
     private final String sku;
     private static int totalProducts = 0;
+    private static int totalProductsOrdered = 0;
 
     //HASHMAP DECLARATION TO DISPLAY PRODUCTS CATALOG
     public static final Map<String, Double> DISPLAY_MAP = new LinkedHashMap<>();
@@ -33,14 +34,27 @@ public class Product {
     //METHOD TO DISPLAY PRODUCTS CATALOG USING FOR EACH LOOP LAMBDA EXPRESSION
     public static void displayProductCatalog() {
         System.out.println("\n--- Available Products (Select by Name) ---");
-        DISPLAY_MAP.forEach((name, price) ->
-                System.out.printf("  > %-10s : $%.2f\n", name, price)
-        );
+        System.out.printf("%-15s %-10s %s\n", "NAME", "SKU", "PRICE");
+        System.out.println("----------------------------------------------");
+
+        DISPLAY_MAP.forEach((name, price) -> {
+
+            Product fullProductInfo = OBJECT_MAP.get(name);
+
+            String sku = "N/A";
+
+            if (fullProductInfo != null) {
+                sku = fullProductInfo.getSku();
+            }
+
+            System.out.printf("> %-13s %-10s $%.2f\n", name, sku, price);
+        });
         System.out.println("-------------------------------------------");
     }
 
     //FOR SELECTION LOOK UP (KEY) //RETURNS MATCHED KEY
     public static boolean isProductAvailable(String selection) {
+        totalProductsOrdered++;
         return DISPLAY_MAP.containsKey(selection);
     }
 
@@ -73,5 +87,9 @@ public class Product {
     //RETURNS TOTAL PRODUCT
     public static int getTotalProducts() {
         return totalProducts;
+    }
+
+    public static int getTotalProductsOrdered() {
+        return totalProductsOrdered;
     }
 }

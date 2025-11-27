@@ -45,8 +45,13 @@ public class Order implements Payable {
 
     //display method
     public void displayOrder() {
-        System.out.println("Order ID: " + orderId);
-        System.out.println("Customer: " + customer.getUsername());
-        System.out.println("Date: " + orderDate);
+        /*System.out.println("> %-10Order ID: " + orderId);
+        System.out.println("> %-10Customer: " + customer.getUsername());
+        System.out.println("> %-10Date: " + orderDate);*/
+
+        System.out.println(String.format(" > %-12s %s", "Order ID               : ", orderId));
+        System.out.println(String.format(" > %-12s %s", "Customer ID            : ", customer.getUsername()));
+        System.out.println(String.format(" > %-12s %s", "Date                   : ", orderDate));
+        System.out.println(String.format(" > %-12s %s", "Total products ordered : ", Product.getTotalProductsOrdered()));
     }
 }
